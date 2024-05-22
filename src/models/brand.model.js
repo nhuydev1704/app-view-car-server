@@ -3,6 +3,10 @@ const { toJSON, paginate } = require('./plugins');
 
 const brandSchema = mongoose.Schema(
   {
+    type: {
+      type: String,
+      default: 'car',
+    },
     src: String,
     alt: String,
     description: String,
