@@ -1,6 +1,9 @@
+const httpStatus = require('http-status');
 const pick = require('../utils/pick');
 const catchAsync = require('../utils/catchAsync');
 const { carService } = require('../services');
+
+const ApiError = require('../utils/ApiError');
 
 const getCars = catchAsync(async (req, res) => {
   const filter = pick(req.query, [
@@ -24,6 +27,15 @@ const getCars = catchAsync(async (req, res) => {
   res.send(result);
 });
 
+const getCar = catchAsync(async (req, res) => {
+  const car = await carService.getCarById(req.params.carId);
+  if (!car) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Car not found');
+  }
+  res.send(car);
+});
+
 module.exports = {
   getCars,
+  getCar,
 };
