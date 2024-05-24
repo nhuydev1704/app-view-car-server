@@ -35,7 +35,16 @@ const getCar = catchAsync(async (req, res) => {
   res.send(car);
 });
 
+const getCarSpec = catchAsync(async (req, res) => {
+  const car = await carService.getCarSpecById(req.params.carId);
+  if (!car) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Car not found');
+  }
+  res.send(car);
+});
+
 module.exports = {
   getCars,
   getCar,
+  getCarSpec,
 };

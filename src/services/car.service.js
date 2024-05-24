@@ -1,4 +1,5 @@
 const { Car, CarDetail } = require('../models');
+const CarDetailSpec = require('../models/car.detail.spec');
 
 const queryCars = async (filter, options) => {
   const cars = await Car.paginate(filter, options);
@@ -16,7 +17,14 @@ const getCarById = async (id) => {
   });
 };
 
+const getCarSpecById = async (id) => {
+  return CarDetailSpec.findOne({
+    car_id: id,
+  });
+};
+
 module.exports = {
   queryCars,
   getCarById,
+  getCarSpecById,
 };
