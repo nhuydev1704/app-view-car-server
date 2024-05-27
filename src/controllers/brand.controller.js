@@ -9,6 +9,13 @@ const getBrands = catchAsync(async (req, res) => {
   res.send(result);
 });
 
+const getBrand = catchAsync(async (req, res) => {
+  const brand = await brandService.getBrandById(req.params.brandId);
+
+  res.send(brand);
+});
+
 module.exports = {
   getBrands,
+  getBrand,
 };

@@ -5,9 +5,7 @@ const router = express.Router();
 
 router.route('/').get(brandController.getBrands);
 
-// router
-//   .route('/:userId')
-//   .get(auth('getUsers'), validate(userValidation.getUser), userController.getUser)
+router.route('/:brandId').get(brandController.getBrand);
 //   .patch(auth('manageUsers'), validate(userValidation.updateUser), userController.updateUser)
 //   .delete(auth('manageUsers'), validate(userValidation.deleteUser), userController.deleteUser);
 
