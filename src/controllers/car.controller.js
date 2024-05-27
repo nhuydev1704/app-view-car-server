@@ -43,8 +43,41 @@ const getCarSpec = catchAsync(async (req, res) => {
   res.send(car);
 });
 
+const getCarByBrand = catchAsync(async (req, res) => {
+  const { brandId } = req.params;
+
+  const filter = pick(req.query, [
+    'name',
+    'detail_state',
+    'detail_priceInfo_minPrice',
+    'detail_priceInfo_maxPrice',
+    'detail_saleState',
+    'detail_hotState',
+    'detail_hotState',
+    'detail_extraInfo_bodyType',
+  ]);
+  const options = pick(req.query, ['sortBy', 'limit', 'page']);
+  const filterNew = Object.keys(filter).reduce((acc, key) => {
+    const newKey = key.replace(/_/g, '.');
+    acc[newKey] = filter[key];
+    return acc;
+  }, {});
+  const result = await carService.queryCars(
+    {
+      ...filterNew,
+      brand_id: brandId,
+    },
+    {
+      ...options,
+      // sortBy: 'detail.addVariantTime:asc',
+    }
+  );
+  res.send(result);
+});
+
 module.exports = {
   getCars,
   getCar,
   getCarSpec,
+  getCarByBrand,
 };

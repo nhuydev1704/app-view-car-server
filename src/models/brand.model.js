@@ -14,6 +14,7 @@ const brandSchema = mongoose.Schema(
     compare: Object,
     faq: Object,
     info: Object,
+    models: Array,
   },
   {
     timestamps: true,
