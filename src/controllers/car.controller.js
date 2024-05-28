@@ -75,9 +75,43 @@ const getCarByBrand = catchAsync(async (req, res) => {
   res.send(result);
 });
 
+const getWishCar = catchAsync(async (req, res) => {
+  const idsArray = req.query.ids ? req.query.ids.split(',').map(Number) : []; // Convert "1,2,3,4,5" to [1,2,3,4,5]
+
+  const filter = pick(req.query, [
+    'name',
+    'detail_state',
+    'detail_priceInfo_minPrice',
+    'detail_priceInfo_maxPrice',
+    'detail_saleState',
+    'detail_hotState',
+    'detail_hotState',
+    'detail_extraInfo_bodyType',
+  ]);
+  const options = pick(req.query, ['sortBy', 'limit', 'page']);
+  const filterNew = Object.keys(filter).reduce((acc, key) => {
+    const newKey = key.replace(/_/g, '.');
+    acc[newKey] = filter[key];
+    return acc;
+  }, {});
+  const result = await carService.queryCars(
+    {
+      ...filterNew,
+      'detail.id': { $in: idsArray },
+    },
+    {
+      ...options,
+
+      // sortBy: 'detail.addVariantTime:asc',
+    }
+  );
+  res.send(result);
+});
+
 module.exports = {
   getCars,
   getCar,
   getCarSpec,
   getCarByBrand,
+  getWishCar,
 };
